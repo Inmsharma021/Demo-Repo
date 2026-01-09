@@ -1,0 +1,39 @@
+name: React App Localhost Simulation
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-serve:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Step 4: Run tests (optional but recommended)
+      - name: Run tests
+        run: npm test -- --watchAll=false
+
+      # Step 5: Build React app
+      - name: Build React app
+        run: npm run build
+
+      # Step 6: Start React app (localhost inside runner)
+      - name: Start React app
+        run: |
+          nohup npm start &
+          echo "React app started on http://localhost:3000 (inside runner)"
